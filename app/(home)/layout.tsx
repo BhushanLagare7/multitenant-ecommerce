@@ -7,6 +7,12 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
+/**
+ * Provides the app page layout with a top navigation bar, a flexible content area, and a footer.
+ *
+ * @param children - Content to render inside the layout's central flexible area.
+ * @returns A JSX element that renders the Navbar, the children inside a flex-grow content area, and the Footer.
+ */
 export default function Layout({ children }: LayoutProps) {
   return (
     <div className="flex flex-col min-h-screen">
