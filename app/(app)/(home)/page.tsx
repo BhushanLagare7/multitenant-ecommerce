@@ -2,11 +2,9 @@ import { getPayload } from "payload";
 import configPromise from "@payload-config";
 
 /**
- * Renders a padded page section containing a vertical stack of demo UI controls.
+ * Fetches the "categories" collection from Payload and renders it as formatted JSON inside a div.
  *
- * The section displays an elevated Button, an Input, a Progress bar set to 50, a Textarea, and a Checkbox arranged with vertical spacing.
- *
- * @returns The root JSX element containing the demo controls
+ * @returns A JSX element containing the formatted JSON representation of the fetched categories
  */
 export default async function Home() {
   const payload = await getPayload({
