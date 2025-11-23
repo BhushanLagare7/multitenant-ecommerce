@@ -7,6 +7,12 @@ import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 
 import { cn } from "@/lib/utils";
 
+/**
+ * Renders a styled checkbox using Radix UI with a centered check icon.
+ *
+ * @param className - Additional class names to merge with the component's default styles.
+ * @returns The CheckboxRoot element with an Indicator that displays a CheckIcon.
+ */
 function Checkbox({
   className,
   ...props
