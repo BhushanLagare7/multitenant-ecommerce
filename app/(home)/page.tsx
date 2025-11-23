@@ -5,11 +5,11 @@ import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 
 /**
- * Render a padded page section containing a vertical stack of demo UI controls.
+ * Renders a padded page section containing a vertical stack of demo UI controls.
  *
- * The section displays a Button (elevated), an Input, a Progress bar set to 50, a Textarea, and a Checkbox, arranged with vertical spacing.
+ * The section displays an elevated Button, an Input, a Progress bar set to 50, a Textarea, and a Checkbox arranged with vertical spacing.
  *
- * @returns A JSX element containing the rendered section with Button, Input, Progress, Textarea, and Checkbox
+ * @returns The root JSX element containing the demo controls
  */
 export default function Home() {
   return (

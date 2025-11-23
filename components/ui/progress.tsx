@@ -25,7 +25,7 @@ function Progress({
       className={cn(
         "overflow-hidden relative w-full h-3 rounded-full",
         // Modified classes
-        "bg-transparent border",
+        "bg-white border",
         className
       )}
       {...props}
