@@ -2,6 +2,13 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
+/**
+ * Renders a styled input element with a set of default utility classes and optional overrides.
+ *
+ * @param className - Additional class names appended to the component's default styles
+ * @param type - The HTML input `type` attribute
+ * @returns The rendered input element
+ */
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (
     <input
