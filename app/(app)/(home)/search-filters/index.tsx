@@ -1,18 +1,33 @@
-import { CustomCategory } from "../types";
+"use client";
+
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { Categories } from "./categories";
 import { SearchInput } from "./search-input";
 
-interface SearchFiltersProps {
-  categories: CustomCategory[];
-}
-
-export const SearchFilters = ({ categories }: SearchFiltersProps) => {
+export const SearchFilters = () => {
   return (
-    <div className="flex flex-col gap-4 px-4 py-8 w-full border-b lg:px-12">
-      <SearchInput data={categories} />
+    <div
+      className="flex flex-col gap-4 py-8 px-4 w-full border-b lg:px-12"
+      style={{ backgroundColor: "#F5F5F5" }}
+    >
+      <SearchInput />
       <div className="hidden lg:block">
-        <Categories data={categories} />
+        <Categories />
+      </div>
+    </div>
+  );
+};
+
+export const SearchFiltersSkeleton = () => {
+  return (
+    <div
+      className="flex flex-col gap-4 py-8 px-4 w-full border-b lg:px-12"
+      style={{ backgroundColor: "#F5F5F5" }}
+    >
+      <SearchInput />
+      <div className="hidden lg:block">
+        <Skeleton className="w-full h-11" />
       </div>
     </div>
   );

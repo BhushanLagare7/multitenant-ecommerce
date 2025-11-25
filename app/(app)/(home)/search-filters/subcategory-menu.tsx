@@ -2,10 +2,10 @@ import Link from "next/link";
 
 import { Category } from "@/payload-types";
 
-import { CustomCategory } from "../types";
+import { CategoriesGetManyOutputSingle } from "@/modules/categories/types";
 
 interface SubCategoryMenuProps {
-  category: CustomCategory;
+  category: CategoriesGetManyOutputSingle;
   isOpen: boolean;
   position: { top: number; left: number };
 }
@@ -31,7 +31,7 @@ export const SubCategoryMenu = ({
       style={{ top: position.top, left: position.left }}
     >
       {/* Invisible bridge to maintain hover */}
-      <div className="h-3 w-60" />
+      <div className="w-60 h-3" />
       <div
         style={{ backgroundColor }}
         className="w-60 text-black rounded-md overflow-hidden border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-x-0.5 -translate-y-0.5"
@@ -41,7 +41,7 @@ export const SubCategoryMenu = ({
             <Link
               key={subcategory.slug}
               href={`/${category.slug}/${subcategory.slug}`}
-              className="flex items-center justify-between w-full p-4 font-medium text-left underline hover:bg-black hover:text-white"
+              className="flex justify-between items-center p-4 w-full font-medium text-left underline hover:bg-black hover:text-white"
             >
               {subcategory.name}
             </Link>
