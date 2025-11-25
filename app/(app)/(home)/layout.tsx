@@ -1,14 +1,10 @@
-import React from "react";
+import React, { Suspense } from "react";
 
-import { getPayload } from "payload";
-import configPromise from "@payload-config";
-
-import { Category } from "@/payload-types";
+import { getQueryClient, HydrateClient, trpc } from "@/trpc/server";
 
 import { Footer } from "./footer";
 import { Navbar } from "./navbar";
-import { SearchFilters } from "./search-filters";
-import { CustomCategory } from "./types";
+import { SearchFilters, SearchFiltersSkeleton } from "./search-filters";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -21,31 +17,19 @@ interface LayoutProps {
  * @returns A JSX element that renders the Navbar, the children inside a flex-grow content area, and the Footer.
  */
 export default async function Layout({ children }: LayoutProps) {
-  const payload = await getPayload({
-    config: configPromise,
-  });
+  const queryClient = getQueryClient();
 
-  const categories = await payload.find({
-    collection: "categories",
-    depth: 1, // Populate Subcategories, subcategories.[0] wiil be a type of "Category"
-    pagination: false,
-    where: { parent: { exists: false } },
-    sort: "name",
-  });
-
-  const formattedCategories: CustomCategory[] = categories.docs.map((doc) => ({
-    ...doc,
-    subcategories: (doc.subcategories?.docs ?? []).map((doc) => ({
-      // Because of "depth: 1" we are confident doc will be a type of "Category"
-      ...(doc as Category),
-      subcategories: undefined,
-    })),
-  }));
+  void queryClient.prefetchQuery(trpc.categories.getMany.queryOptions());
 
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <SearchFilters categories={formattedCategories} />
+      <HydrateClient>
+        <Suspense fallback={<SearchFiltersSkeleton />}>
+          <SearchFilters />
+        </Suspense>
+      </HydrateClient>
+
       <div className="flex-1 bg-[#F4F4F0]">{children}</div>
       <Footer />
     </div>

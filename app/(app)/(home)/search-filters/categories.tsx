@@ -3,31 +3,34 @@
 import { useEffect, useRef, useState } from "react";
 
 import { ListFilterIcon } from "lucide-react";
+import { useSuspenseQuery } from "@tanstack/react-query";
+
+import { useTRPC } from "@/trpc/client";
 
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 
-import { CustomCategory } from "../types";
-
 import { CategoriesSidebar } from "./categories-sidebar";
 import { CategoryDropdown } from "./category-dropdown";
 
-interface CategoriesProps {
-  data: CustomCategory[];
-}
+export const Categories = () => {
+  const trpc = useTRPC();
 
-export const Categories = ({ data }: CategoriesProps) => {
+  const { data: categories } = useSuspenseQuery(
+    trpc.categories.getMany.queryOptions()
+  );
+
   const containerRef = useRef<HTMLDivElement>(null);
   const measureRef = useRef<HTMLDivElement>(null);
   const viewAllRef = useRef<HTMLDivElement>(null);
 
-  const [visibleCount, setVisibleCount] = useState(data.length);
+  const [visibleCount, setVisibleCount] = useState(categories.length);
   const [isAnyHovered, setIsAnyHovered] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const activeCategory = "all";
-  const activeCategoryIndex = data.findIndex(
+  const activeCategoryIndex = categories.findIndex(
     (category) => category.slug === activeCategory
   );
   const isActiveCategoryHidden =
@@ -62,23 +65,19 @@ export const Categories = ({ data }: CategoriesProps) => {
     resizeObserver.observe(containerRef.current!);
 
     return () => resizeObserver.disconnect();
-  }, [data.length]);
+  }, [categories.length]);
 
   return (
     <div className="relative w-full">
       {/* Categories Sidebar */}
-      <CategoriesSidebar
-        open={isSidebarOpen}
-        onOpenChange={setIsSidebarOpen}
-        data={data}
-      />
+      <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} />
       {/* Hidden div to measure all items */}
       <div
         ref={measureRef}
-        className="absolute flex opacity-0 pointer-events-none"
+        className="flex absolute opacity-0 pointer-events-none"
         style={{ position: "fixed", top: -9999, left: -9999 }}
       >
-        {data.map((category) => (
+        {categories.map((category) => (
           <div key={category.id}>
             <CategoryDropdown
               category={category}
@@ -92,11 +91,11 @@ export const Categories = ({ data }: CategoriesProps) => {
       {/* Visible Items */}
       <div
         ref={containerRef}
-        className="flex items-center flex-nowrap"
+        className="flex flex-nowrap items-center"
         onMouseEnter={() => setIsAnyHovered(true)}
         onMouseLeave={() => setIsAnyHovered(false)}
       >
-        {data.slice(0, visibleCount).map((category) => (
+        {categories.slice(0, visibleCount).map((category) => (
           <div key={category.id}>
             <CategoryDropdown
               category={category}
