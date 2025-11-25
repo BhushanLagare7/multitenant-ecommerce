@@ -8,6 +8,7 @@ import { Category } from "@/payload-types";
 import { Footer } from "./footer";
 import { Navbar } from "./navbar";
 import { SearchFilters } from "./search-filters";
+import { CustomCategory } from "./types";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -29,9 +30,10 @@ export default async function Layout({ children }: LayoutProps) {
     depth: 1, // Populate Subcategories, subcategories.[0] wiil be a type of "Category"
     pagination: false,
     where: { parent: { exists: false } },
+    sort: "name",
   });
 
-  const formattedCategories = categories.docs.map((doc) => ({
+  const formattedCategories: CustomCategory[] = categories.docs.map((doc) => ({
     ...doc,
     subcategories: (doc.subcategories?.docs ?? []).map((doc) => ({
       // Because of "depth: 1" we are confident doc will be a type of "Category"
