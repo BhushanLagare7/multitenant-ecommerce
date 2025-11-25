@@ -1,14 +1,31 @@
-import { SearchIcon } from "lucide-react";
+"use client";
 
+import { useState } from "react";
+
+import { ListFilterIcon, SearchIcon } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
+import { CustomCategory } from "../types";
+
+import { CategoriesSidebar } from "./categories-sidebar";
 
 interface SearchInputProps {
   disabled?: boolean;
+  data: CustomCategory[];
 }
 
-export const SearchInput = ({ disabled }: SearchInputProps) => {
+export const SearchInput = ({ disabled, data }: SearchInputProps) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
     <div className="flex gap-2 items-center w-full">
+      <CategoriesSidebar
+        data={data}
+        open={isSidebarOpen}
+        onOpenChange={setIsSidebarOpen}
+      />
       <div className="relative w-full">
         <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-500" />
         <Input
@@ -18,6 +35,13 @@ export const SearchInput = ({ disabled }: SearchInputProps) => {
         />
       </div>
       {/* TODO: Add categories view all button */}
+      <Button
+        variant="elevated"
+        className="flex size-12 shrink-0 lg:hidden"
+        onClick={() => setIsSidebarOpen(true)}
+      >
+        <ListFilterIcon />
+      </Button>
       {/* TODO: Add library button */}
     </div>
   );

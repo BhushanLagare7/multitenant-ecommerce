@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "types": "bunx --bun payload generate:types --disable-transpile",
-    "db:fresh": "bunx --bun payload migrate:fresh --disable-transpile"
+    "generate:types": "bunx --bun payload generate:types --disable-transpile",
+    "db:fresh": "bunx --bun payload migrate:fresh --disable-transpile",
+    "db:seed": "bun run seed.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
