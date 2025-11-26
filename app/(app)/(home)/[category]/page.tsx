@@ -1,3 +1,12 @@
+import { Suspense } from "react";
+
+import { getQueryClient, HydrateClient, trpc } from "@/trpc/server";
+
+import {
+  ProductList,
+  ProductListSkeleton,
+} from "@/modules/products/ui/components/product-list";
+
 /**
  * Render a page displaying the current category route segment.
  *
@@ -7,5 +16,17 @@
 export default async function Category({ params }: PageProps<"/[category]">) {
   const { category } = await params;
 
-  return <div>Category: {category}</div>;
+  const queryClient = getQueryClient();
+
+  void queryClient.prefetchQuery(
+    trpc.products.getMany.queryOptions({ category })
+  );
+
+  return (
+    <HydrateClient>
+      <Suspense fallback={<ProductListSkeleton />}>
+        <ProductList category={category} />
+      </Suspense>
+    </HydrateClient>
+  );
 }

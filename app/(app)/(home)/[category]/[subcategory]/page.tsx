@@ -1,17 +1,34 @@
+import { Suspense } from "react";
+
+import { getQueryClient, HydrateClient, trpc } from "@/trpc/server";
+
+import {
+  ProductList,
+  ProductListSkeleton,
+} from "@/modules/products/ui/components/product-list";
+
 /**
- * Render a page showing the category and subcategory extracted from the route parameters.
+ * Render a page displaying the current category route segment.
  *
- * @param params - An object with `category` and `subcategory` URL segments from the current route.
- * @returns A React element displaying "Category: {category}, Subcategory: {subcategory}".
+ * @param params - Object of route parameters; `params.category` is the URL segment for the category
+ * @returns A JSX element containing "Category: " followed by the `category` value
  */
 export default async function Subcategory({
   params,
 }: PageProps<"/[category]/[subcategory]">) {
-  const { category, subcategory } = await params;
+  const { subcategory } = await params;
+
+  const queryClient = getQueryClient();
+
+  void queryClient.prefetchQuery(
+    trpc.products.getMany.queryOptions({ category: subcategory })
+  );
 
   return (
-    <div>
-      Category: {category}, Subcategory: {subcategory}
-    </div>
+    <HydrateClient>
+      <Suspense fallback={<ProductListSkeleton />}>
+        <ProductList category={subcategory} />
+      </Suspense>
+    </HydrateClient>
   );
 }
