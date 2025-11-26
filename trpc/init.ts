@@ -24,10 +24,10 @@ const t = initTRPC.create({
 // Base router and procedure helpers
 export const createTRPCRouter = t.router;
 export const createCallerFactory = t.createCallerFactory;
-export const baseProcedure = t.procedure.use(async ({ next }) => {
+export const baseProcedure = t.procedure.use(async ({ next, ctx }) => {
   const payload = await getPayload({
     config: configPromise,
   });
 
-  return next({ ctx: { db: payload } });
+  return next({ ctx: { ...ctx, db: payload } });
 });
