@@ -46,12 +46,14 @@ export const NavbarSidebar = ({
             <Link
               href="/sign-in"
               className="flex items-center p-4 w-full text-base font-medium text-left hover:bg-black hover:text-white"
+              onClick={() => onOpenChange(false)}
             >
               Login
             </Link>
             <Link
               href="/sign-up"
               className="flex items-center p-4 w-full text-base font-medium text-left hover:bg-black hover:text-white"
+              onClick={() => onOpenChange(false)}
             >
               Start Selling
             </Link>
