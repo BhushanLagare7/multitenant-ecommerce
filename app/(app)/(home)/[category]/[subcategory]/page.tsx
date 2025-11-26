@@ -8,10 +8,10 @@ import {
 } from "@/modules/products/ui/components/product-list";
 
 /**
- * Render a page displaying the current category route segment.
+ * Render the subcategory product listing page and prefetch products for client hydration.
  *
- * @param params - Object of route parameters; `params.category` is the URL segment for the category
- * @returns A JSX element containing "Category: " followed by the `category` value
+ * @param params - Route parameters; only `params.subcategory` (the subcategory URL segment) is used for fetching and rendering
+ * @returns A JSX element that hydrates prefetched product data and renders the product list for the `subcategory`
  */
 export default async function Subcategory({
   params,
