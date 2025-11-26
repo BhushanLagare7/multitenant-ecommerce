@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useParams } from "next/navigation";
 
 import { ListFilterIcon } from "lucide-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -15,8 +16,9 @@ import { CategoriesSidebar } from "./categories-sidebar";
 import { CategoryDropdown } from "./category-dropdown";
 
 export const Categories = () => {
-  const trpc = useTRPC();
+  const params = useParams<{ category: string }>();
 
+  const trpc = useTRPC();
   const { data: categories } = useSuspenseQuery(
     trpc.categories.getMany.queryOptions()
   );
@@ -29,7 +31,8 @@ export const Categories = () => {
   const [isAnyHovered, setIsAnyHovered] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const activeCategory = "all";
+  const categoryParam = params.category;
+  const activeCategory = categoryParam || "all";
   const activeCategoryIndex = categories.findIndex(
     (category) => category.slug === activeCategory
   );
@@ -107,6 +110,7 @@ export const Categories = () => {
 
         <div ref={viewAllRef} className="shrink-0">
           <Button
+            variant="elevated"
             className={cn(
               "px-4 text-black bg-transparent border-transparent rounded-full h-11 hover:bg-white hover:border-primary",
               isActiveCategoryHidden &&

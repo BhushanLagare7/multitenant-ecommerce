@@ -24,7 +24,7 @@ export const useDropdownPosition = (
       }
     }
 
-    // Ensure dropdown dosen't go off the left edge
+    // Ensure dropdown doesn't go off the left edge
     if (left < 0) {
       left = 16;
     }
