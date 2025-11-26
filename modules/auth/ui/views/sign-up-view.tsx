@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useTRPC } from "@/trpc/client";
 
@@ -36,9 +36,14 @@ export const SignUpView = () => {
   const router = useRouter();
 
   const trpc = useTRPC();
+  const queryClient = useQueryClient();
+
   const registerMutation = useMutation(
     trpc.auth.register.mutationOptions({
-      onSuccess: () => {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({
+          queryKey: trpc.auth.session.queryKey(),
+        });
         router.push("/");
       },
       onError: (error) => {
