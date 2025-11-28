@@ -16,6 +16,11 @@ const params = {
     .withDefault([]),
 };
 
+/**
+ * Use product filters hook
+ * @description A hook that returns the product filters.
+ * @returns {object} An object containing the product filters
+ */
 export const useProductFilters = () => {
   return useQueryStates(params);
 };

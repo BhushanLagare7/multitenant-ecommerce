@@ -13,6 +13,11 @@ import { BreadcrumbNavigation } from "./breadcrumb-navigation";
 import { Categories } from "./categories";
 import { SearchInput } from "./search-input";
 
+/**
+ * Search filters component
+ * @description A component that renders the search filters.
+ * @returns {JSX.Element} A JSX element that renders the search filters component
+ */
 export const SearchFilters = () => {
   const params = useParams<{
     category: string | undefined;
@@ -57,6 +62,11 @@ export const SearchFilters = () => {
   );
 };
 
+/**
+ * Search filters skeleton component
+ * @description A component that renders the search filters skeleton.
+ * @returns {JSX.Element} A JSX element that renders the search filters skeleton component
+ */
 export const SearchFiltersSkeleton = () => {
   return (
     <div

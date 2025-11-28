@@ -1,3 +1,5 @@
+import { JSX } from "react";
+
 import { LoaderIcon } from "lucide-react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
@@ -10,7 +12,19 @@ interface TagsFilterProps {
   tags?: string[] | null;
   onTagsChange: (tags: string[]) => void;
 }
-export const TagsFilter = ({ tags, onTagsChange }: TagsFilterProps) => {
+
+/**
+ * Tags filter component
+ * @description A component that renders the tags filter.
+ * @param {object} props - The props object
+ * @param props.tags - The tags of the filter
+ * @param props.onTagsChange - The callback function to be called when the tags change
+ * @returns {JSX.Element} A JSX element that renders the tags filter component
+ */
+export const TagsFilter = ({
+  tags,
+  onTagsChange,
+}: TagsFilterProps): JSX.Element => {
   const trpc = useTRPC();
   const {
     data: tagsData,
@@ -28,6 +42,11 @@ export const TagsFilter = ({ tags, onTagsChange }: TagsFilterProps) => {
     )
   );
 
+  /**
+   * Handle tags change
+   *
+   * @param tag - The tag to be changed
+   */
   const handleTagsChange = (tag: string) => {
     if (tags?.includes(tag)) {
       onTagsChange(tags?.filter((t) => t !== tag) || []);
@@ -36,6 +55,11 @@ export const TagsFilter = ({ tags, onTagsChange }: TagsFilterProps) => {
     }
   };
 
+  /**
+   * Render tags filter
+   *
+   * @returns JSX.Element A JSX element that renders the tags filter
+   */
   return (
     <div className="flex flex-col gap-y-2">
       {isLoading ? (

@@ -17,6 +17,12 @@ interface SearchInputProps {
   disabled?: boolean;
 }
 
+/**
+ * Search input component
+ * @description A component that renders the search input.
+ * @param props.disabled - The disabled state of the input
+ * @returns {JSX.Element} A JSX element that renders the search input component
+ */
 export const SearchInput = ({ disabled }: SearchInputProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 

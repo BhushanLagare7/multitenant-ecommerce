@@ -17,6 +17,14 @@ interface CategoryDropdownProps {
   isNavigationHovered: boolean;
 }
 
+/**
+ * Category dropdown component
+ *
+ * @param props.category - The category to be displayed
+ * @param props.isActive - The active state of the category
+ * @param props.isNavigationHovered - The navigation hover state of the category
+ * @returns {JSX.Element} A JSX element that renders the category dropdown component
+ */
 export const CategoryDropdown = ({
   category,
   isActive,

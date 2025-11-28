@@ -28,6 +28,14 @@ interface NavbarItemProps {
   isActive?: boolean;
 }
 
+/**
+ * Navbar item component
+ * @description A component that renders the navbar item.
+ * @param props.href - The href of the item
+ * @param props.children - The children of the item
+ * @param props.isActive - The active state of the item
+ * @returns JSX.Element A JSX element that renders the navbar item component
+ */
 const NavbarItem = ({ href, children, isActive }: NavbarItemProps) => {
   return (
     <Button
@@ -51,6 +59,11 @@ const navbarItems: NavbarItemProps[] = [
   { href: "/contact", children: "Contact" },
 ];
 
+/**
+ * Navbar component
+ * @description A component that renders the navbar.
+ * @returns {JSX.Element} A JSX element that renders the navbar component
+ */
 export const Navbar = () => {
   const pathname = usePathname();
 

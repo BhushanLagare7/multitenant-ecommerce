@@ -20,8 +20,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * Root layout component that renders the HTML document root and applies global font and antialiasing.
- *
+ * @description Root layout component that renders the HTML document root and applies global font and antialiasing.
  * @param children - Content to render inside the document body
  * @returns A React element representing the page root (`<html>` with a `<body>` that contains `children`)
  */

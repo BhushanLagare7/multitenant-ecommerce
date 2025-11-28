@@ -1,3 +1,4 @@
+import { JSX } from "react";
 import Link from "next/link";
 
 import { Category } from "@/payload-types";
@@ -10,11 +11,24 @@ interface SubCategoryMenuProps {
   position: { top: number; left: number };
 }
 
+/**
+ * Subcategory menu component
+ * @description A component that renders the subcategory menu.
+ * @param props.category - The category of the menu
+ * @param props.isOpen - The open state of the menu
+ * @param props.position - The position of the menu
+ * @returns {JSX.Element | null} A JSX element that renders the subcategory menu, or null if menu should not render
+ */
 export const SubCategoryMenu = ({
   category,
   isOpen,
   position,
-}: SubCategoryMenuProps) => {
+}: SubCategoryMenuProps): JSX.Element | null => {
+  /**
+   * Check if the menu should be rendered
+   *
+   * @returns null if the menu should not be rendered
+   */
   if (
     !isOpen ||
     !category.subcategories ||

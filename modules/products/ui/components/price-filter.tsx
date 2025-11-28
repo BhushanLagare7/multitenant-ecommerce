@@ -12,6 +12,12 @@ interface PriceFilterProps {
   onMaxPriceChange: (value: string) => void;
 }
 
+/**
+ * Formats a numeric string as a currency value.
+ * @description A function that formats a numeric string as a currency value.
+ * @param {string} value - The numeric string to format
+ * @returns {string} The formatted currency value
+ */
 export const formatAsCurrency = (value: string) => {
   const numericValue = value.replace(/[^0-9]/g, "");
   const parts = numericValue.split(".");
@@ -32,6 +38,15 @@ export const formatAsCurrency = (value: string) => {
   }).format(numberValue);
 };
 
+/**
+ * Price filter component
+ *
+ * @param props.minPrice - The minimum price
+ * @param props.maxPrice - The maximum price
+ * @param props.onMinPriceChange - The callback function to be called when the minimum price changes
+ * @param props.onMaxPriceChange - The callback function to be called when the maximum price changes
+ * @returns The price filter component
+ */
 export const PriceFilter = ({
   minPrice,
   maxPrice,

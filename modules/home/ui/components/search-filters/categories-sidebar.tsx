@@ -23,6 +23,13 @@ interface CategoriesSidebarProps {
   onOpenChange: (open: boolean) => void;
 }
 
+/**
+ * Categories sidebar component
+ *
+ * @param props.open - The open state of the sidebar
+ * @param props.onOpenChange - The callback function to be called when the open state changes
+ * @returns {JSX.Element} A JSX element that renders the categories sidebar component
+ */
 export const CategoriesSidebar = ({
   open,
   onOpenChange,

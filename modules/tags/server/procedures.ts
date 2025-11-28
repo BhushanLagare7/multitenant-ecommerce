@@ -4,6 +4,14 @@ import { DEFAULT_LIMIT } from "@/constants";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 
 export const tagsRouter = createTRPCRouter({
+  /**
+   * Get many tags
+   * @description Gets many tags from the database.
+   * @param {object} input - The input object
+   * @param input.cursor - The cursor of the tags
+   * @param input.limit - The limit of the tags
+   * @returns {Promise<Tag[]>} The tags
+   */
   getMany: baseProcedure
     .input(
       z.object({

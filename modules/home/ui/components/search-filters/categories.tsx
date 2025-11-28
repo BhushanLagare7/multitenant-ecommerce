@@ -15,6 +15,11 @@ import { Button } from "@/components/ui/button";
 import { CategoriesSidebar } from "./categories-sidebar";
 import { CategoryDropdown } from "./category-dropdown";
 
+/**
+ * Categories component
+ *
+ * @returns {JSX.Element} A JSX element that renders the categories component
+ */
 export const Categories = () => {
   const params = useParams<{ category: string }>();
 
@@ -23,10 +28,16 @@ export const Categories = () => {
     trpc.categories.getMany.queryOptions()
   );
 
+  /**
+   * Refs for the container, measure, and view all elements
+   */
   const containerRef = useRef<HTMLDivElement>(null);
   const measureRef = useRef<HTMLDivElement>(null);
   const viewAllRef = useRef<HTMLDivElement>(null);
 
+  /**
+   * State for the visible count, any hovered state, and sidebar open state
+   */
   const [visibleCount, setVisibleCount] = useState(categories.length);
   const [isAnyHovered, setIsAnyHovered] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -39,6 +50,9 @@ export const Categories = () => {
   const isActiveCategoryHidden =
     activeCategoryIndex >= visibleCount && activeCategoryIndex !== -1;
 
+  /**
+   * Calculate the number of visible categories
+   */
   useEffect(() => {
     const calculateVisible = () => {
       if (!containerRef.current || !measureRef.current || !viewAllRef.current)

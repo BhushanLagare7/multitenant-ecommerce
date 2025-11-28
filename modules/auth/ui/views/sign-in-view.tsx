@@ -31,6 +31,10 @@ const poppins = Poppins({
   weight: ["700"],
 });
 
+/**
+ * @description Sign in view component.
+ * @returns {JSX.Element} The sign in view component.
+ */
 export const SignInView = () => {
   const router = useRouter();
 

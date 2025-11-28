@@ -1,8 +1,19 @@
 import { RefObject } from "react";
 
+/**
+ * Use dropdown position hook
+ * @description A hook that returns the position of the dropdown.
+ * @param ref - The reference of the dropdown
+ * @returns An object containing the getDropdownPosition function
+ */
 export const useDropdownPosition = (
   ref: RefObject<HTMLDivElement | null> | RefObject<HTMLDivElement>
 ) => {
+  /**
+   * Get dropdown position
+   *
+   * @returns An object containing the top and left position of the dropdown
+   */
   const getDropdownPosition = () => {
     if (!ref.current) return { top: 0, left: 0 };
 
