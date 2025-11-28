@@ -1,19 +1,33 @@
-"use client";
-
 import { JSX } from "react";
 
-import { useQuery } from "@tanstack/react-query";
+import { DEFAULT_LIMIT } from "@/constants";
+import { getQueryClient, HydrateClient, trpc } from "@/trpc/server";
 
-import { useTRPC } from "@/trpc/client";
+import { loadProductFilters } from "@/modules/products/search-params";
+import { ProductListView } from "@/modules/products/ui/views/product-list-view";
 
 /**
- * Render the home page and prefetch the session for client hydration.
- * @description A page that renders the home page and prefetches the session for client hydration.
- * @returns {JSX.Element} A JSX element that hydrates prefetched session data and renders the home page
+ * @description Render the product-list page, hydrating client state and infinite prefetching products to  `DEFAULT_LIMIT`. Hydrates the query client, triggers a background prefetch for products, and renders a `ProductListView`.
+ * @param searchParams - Search parameters object; `searchParams` is the URL search parameters
+ * @returns {Promise<JSX.Element>} A Promise that resolves to a JSX element that hydrates client state and renders the `ProductListView`
  */
-export default function Home(): JSX.Element {
-  const trpc = useTRPC();
-  const { data } = useQuery(trpc.auth.session.queryOptions());
+export default async function Home({
+  searchParams,
+}: PageProps<"/">): Promise<JSX.Element> {
+  const filters = await loadProductFilters(searchParams);
 
-  return <div>{JSON.stringify(data?.user, null, 2)}</div>;
+  const queryClient = getQueryClient();
+
+  void queryClient.prefetchInfiniteQuery(
+    trpc.products.getMany.infiniteQueryOptions({
+      ...filters,
+      limit: DEFAULT_LIMIT,
+    })
+  );
+
+  return (
+    <HydrateClient>
+      <ProductListView />
+    </HydrateClient>
+  );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { JSX, useRef, useState } from "react";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { CategoriesGetManyOutputSingle } from "@/modules/categories/types";
 
 import { SubCategoryMenu } from "./subcategory-menu";
-import { useDropdownPosition } from "./use-dropdown-position";
 
 interface CategoryDropdownProps {
   category: CategoriesGetManyOutputSingle;
@@ -19,7 +18,7 @@ interface CategoryDropdownProps {
 
 /**
  * Category dropdown component
- *
+ * @description A component that renders the category dropdown.
  * @param props.category - The category to be displayed
  * @param props.isActive - The active state of the category
  * @param props.isNavigationHovered - The navigation hover state of the category
@@ -29,12 +28,10 @@ export const CategoryDropdown = ({
   category,
   isActive,
   isNavigationHovered,
-}: CategoryDropdownProps) => {
+}: CategoryDropdownProps): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  const { getDropdownPosition } = useDropdownPosition(dropdownRef);
 
   const onMouseEnter = () => {
     if (category.subcategories) {
@@ -43,8 +40,6 @@ export const CategoryDropdown = ({
   };
 
   const onMouseLeave = () => setIsOpen(false);
-
-  const dropdownPosition = getDropdownPosition();
 
   // TODO: Potentially improve mobile experience
   // const toggleDropdown = () => {
@@ -85,11 +80,7 @@ export const CategoryDropdown = ({
         )}
       </div>
 
-      <SubCategoryMenu
-        category={category}
-        isOpen={isOpen}
-        position={dropdownPosition}
-      />
+      <SubCategoryMenu category={category} isOpen={isOpen} />
     </div>
   );
 };

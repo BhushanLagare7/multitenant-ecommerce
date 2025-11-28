@@ -139,11 +139,43 @@ const categories = [
 
 /**
  * Seed function for populating the database
- *
+ * @description This function seeds the database with categories and subcategories
  * @returns {Promise<void>} A promise that resolves when the seeding is complete
  */
-const seed = async () => {
+const seed = async (): Promise<void> => {
   const payload = await getPayload({ config });
+
+  // Create admin tenant
+  const adminTenant = await payload.create({
+    collection: "tenants",
+    data: {
+      name: "admin",
+      slug: "admin",
+      stripeAccountId: "admin",
+    },
+  });
+
+  console.log("Admin tenant created successfully");
+
+  // Wait for 5 seconds
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+
+  // Create admin user
+  await payload.create({
+    collection: "users",
+    data: {
+      email: "admin@demo.com",
+      password: "demo",
+      roles: ["super-admin"],
+      username: "admin",
+      tenants: [{ tenant: adminTenant.id }],
+    },
+  });
+
+  console.log("Admin user created successfully");
+
+  // Wait for 5 seconds
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 
   for (const category of categories) {
     const parentCategory = await payload.create({
@@ -167,6 +199,8 @@ const seed = async () => {
       });
     }
   }
+
+  console.log("Categories created successfully");
 };
 
 try {

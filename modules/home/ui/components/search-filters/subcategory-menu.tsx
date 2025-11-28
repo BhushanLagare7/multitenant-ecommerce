@@ -8,7 +8,6 @@ import { CategoriesGetManyOutputSingle } from "@/modules/categories/types";
 interface SubCategoryMenuProps {
   category: CategoriesGetManyOutputSingle;
   isOpen: boolean;
-  position: { top: number; left: number };
 }
 
 /**
@@ -16,13 +15,11 @@ interface SubCategoryMenuProps {
  * @description A component that renders the subcategory menu.
  * @param props.category - The category of the menu
  * @param props.isOpen - The open state of the menu
- * @param props.position - The position of the menu
  * @returns {JSX.Element | null} A JSX element that renders the subcategory menu, or null if menu should not render
  */
 export const SubCategoryMenu = ({
   category,
   isOpen,
-  position,
 }: SubCategoryMenuProps): JSX.Element | null => {
   /**
    * Check if the menu should be rendered
@@ -40,10 +37,7 @@ export const SubCategoryMenu = ({
   const backgroundColor = category.color || "#F5F5F5";
 
   return (
-    <div
-      className="fixed z-100"
-      style={{ top: position.top, left: position.left }}
-    >
+    <div className="absolute z-100" style={{ top: "100%", left: 0 }}>
       {/* Invisible bridge to maintain hover */}
       <div className="w-60 h-3" />
       <div
