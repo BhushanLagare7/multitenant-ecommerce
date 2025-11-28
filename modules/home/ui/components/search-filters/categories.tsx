@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { JSX, useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 
 import { ListFilterIcon } from "lucide-react";
@@ -17,10 +17,10 @@ import { CategoryDropdown } from "./category-dropdown";
 
 /**
  * Categories component
- *
+ * @description A component that renders the categories component.
  * @returns {JSX.Element} A JSX element that renders the categories component
  */
-export const Categories = () => {
+export const Categories = (): JSX.Element => {
   const params = useParams<{ category: string }>();
 
   const trpc = useTRPC();
