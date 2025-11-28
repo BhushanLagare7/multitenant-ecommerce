@@ -1,12 +1,19 @@
 "use client";
 
+import { JSX } from "react";
+
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 
 import { useProductFilters } from "../../hooks/use-product-filters";
 
-export const ProductSort = () => {
+/**
+ * Product sort component
+ * @description A component that renders the product sort.
+ * @returns {JSX.Element} A JSX element that renders the product sort component
+ */
+export const ProductSort = (): JSX.Element => {
   const [filters, setFilters] = useProductFilters();
 
   return (

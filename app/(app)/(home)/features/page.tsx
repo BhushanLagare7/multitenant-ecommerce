@@ -1,6 +1,5 @@
 /**
- * Renders the Features page.
- *
+ * @description Renders the Features page.
  * @returns A JSX element containing the Features page content.
  */
 export default function FeaturesPage() {

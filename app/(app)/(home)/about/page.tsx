@@ -1,6 +1,5 @@
 /**
- * Renders the About page.
- *
+ * @description Renders the About page.
  * @returns A JSX element containing the About page content.
  */
 export default function AboutPage() {

@@ -17,6 +17,15 @@ interface ProductFilterProps {
   children: React.ReactNode;
 }
 
+/**
+ * Product filter component
+ * @description A component that renders the product filter.
+ * @param {object} props - The props object
+ * @param props.title - The title of the filter
+ * @param props.className - The class name of the filter
+ * @param props.children - The children of the filter
+ * @returns {JSX.Element} A JSX element that renders the product filter component
+ */
 const ProductFilter = ({ title, className, children }: ProductFilterProps) => {
   const [open, setOpen] = useState(false);
 
@@ -36,6 +45,11 @@ const ProductFilter = ({ title, className, children }: ProductFilterProps) => {
   );
 };
 
+/**
+ * Product filters component
+ * @description A component that renders the product filters.
+ * @returns {JSX.Element} A JSX element that renders the product filters component
+ */
 export const ProductFilters = () => {
   const [filters, setFilters] = useProductFilters();
 

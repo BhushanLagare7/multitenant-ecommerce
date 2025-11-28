@@ -20,6 +20,14 @@ interface NavbarSidebarProps {
   onOpenChange: (open: boolean) => void;
 }
 
+/**
+ * Navbar sidebar component
+ * @description A component that renders the navbar sidebar.
+ * @param props.items - The items to be displayed in the sidebar
+ * @param props.open - The open state of the sidebar
+ * @param props.onOpenChange - The callback function to be called when the open state changes
+ * @returns JSX.Element A JSX element that renders the navbar sidebar component
+ */
 export const NavbarSidebar = ({
   items,
   open,

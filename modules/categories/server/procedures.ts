@@ -1,6 +1,11 @@
 import { Category } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 
+/**
+ * @description Router for categories procedures.
+ * @type {TRPCRouter}
+ * @property {function} getMany - Procedure to get all categories.
+ */
 export const categoriesRouter = createTRPCRouter({
   getMany: baseProcedure.query(async ({ ctx }) => {
     const categories = await ctx.db.find({

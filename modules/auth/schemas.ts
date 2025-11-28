@@ -1,5 +1,12 @@
 import { z } from "zod";
 
+/**
+ * @description Register schema for user registration.
+ * @type {ZodObject}
+ * @property {ZodString} email - The email field for user registration.
+ * @property {ZodString} password - The password field for user registration.
+ * @property {ZodString} username - The username field for user registration.
+ */
 export const registerSchema = z.object({
   email: z.email(),
   password: z.string().min(3, "Password must be at least 3 characters long"),
@@ -18,6 +25,12 @@ export const registerSchema = z.object({
     .transform((value) => value.toLowerCase()),
 });
 
+/**
+ * @description Login schema for user login.
+ * @type {ZodObject}
+ * @property {ZodString} email - The email field for user login.
+ * @property {ZodString} password - The password field for user login.
+ */
 export const loginSchema = z.object({
   email: z.email(),
   password: z.string().min(3, "Password must be at least 3 characters long"),

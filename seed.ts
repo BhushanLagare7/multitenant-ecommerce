@@ -137,6 +137,11 @@ const categories = [
   },
 ];
 
+/**
+ * Seed function for populating the database
+ *
+ * @returns {Promise<void>} A promise that resolves when the seeding is complete
+ */
 const seed = async () => {
   const payload = await getPayload({ config });
 

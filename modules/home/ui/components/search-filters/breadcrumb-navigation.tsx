@@ -15,6 +15,14 @@ interface BreadcrumbNavigationProps {
   activeSubcategoryName?: string | null;
 }
 
+/**
+ * Breadcrumb navigation component
+ *
+ * @param props.activeCategorySlug - The slug of the active category
+ * @param props.activeCategoryName - The name of the active category
+ * @param props.activeSubcategoryName - The name of the active subcategory
+ * @returns {JSX.Element} A JSX element that renders the breadcrumb navigation component
+ */
 export const BreadcrumbNavigation = ({
   activeCategorySlug,
   activeCategoryName,

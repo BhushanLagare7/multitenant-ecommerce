@@ -7,6 +7,13 @@ import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { loginSchema, registerSchema } from "../schemas";
 import { generateAuthCookie } from "../utils";
 
+/**
+ * @description Router for authentication procedures.
+ * @type {TRPCRouter}
+ * @property {function} session - Procedure to get the current session.
+ * @property {function} register - Procedure to register a new user.
+ * @property {function} login - Procedure to login an existing user.
+ */
 export const authRouter = createTRPCRouter({
   session: baseProcedure.query(async ({ ctx }) => {
     const headers = await getHeaders();
