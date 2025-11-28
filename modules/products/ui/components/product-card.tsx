@@ -1,15 +1,19 @@
 import { JSX } from "react";
+import { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { StarIcon } from "lucide-react";
+
+import { generateTenantUrl } from "@/lib/utils";
 
 interface ProductCardProps {
   id: string;
   name: string;
   imageUrl?: string | null;
-  authorUsername: string;
-  authorImageUrl?: string | null;
+  tenantSlug: string;
+  tenantImageUrl?: string | null;
   reviewRating: number;
   reviewCount: number;
   price: number;
@@ -22,8 +26,8 @@ interface ProductCardProps {
  * @param props.id - The product ID
  * @param props.name - The product name
  * @param props.imageUrl - The product image URL
- * @param props.authorUsername - The product author username
- * @param props.authorImageUrl - The product author image URL
+ * @param props.tenantSlug - The product tenant slug
+ * @param props.tenantImageUrl - The product tenant image URL
  * @param props.reviewRating - The product review rating
  * @param props.reviewCount - The product review count
  * @param props.price - The product price
@@ -33,12 +37,20 @@ export const ProductCard = ({
   id,
   name,
   imageUrl,
-  authorUsername,
-  authorImageUrl,
+  tenantSlug,
+  tenantImageUrl,
   reviewRating,
   reviewCount,
   price,
 }: ProductCardProps): JSX.Element => {
+  const router = useRouter();
+
+  const handleUserClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    router.push(generateTenantUrl(tenantSlug) as Route<string>);
+  };
+
   return (
     <Link href={`/products/${id}`}>
       <div className="flex overflow-hidden flex-col h-full bg-white rounded-md border hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow">
@@ -52,18 +64,17 @@ export const ProductCard = ({
         </div>
         <div className="flex flex-col flex-1 gap-3 p-4 border-y">
           <h2 className="text-lg font-medium line-clamp-4">{name}</h2>
-          {/* // TODO: Redirect to user shop */}
-          <div className="flex gap-2 items-center" onClick={() => {}}>
-            {authorImageUrl && (
+          <div className="flex gap-2 items-center" onClick={handleUserClick}>
+            {tenantImageUrl && (
               <Image
-                src={authorImageUrl}
-                alt={authorUsername}
+                src={tenantImageUrl}
+                alt={tenantSlug}
                 width={16}
                 height={16}
                 className="rounded-full border shrink-0 size-[16px]"
               />
             )}
-            <p className="text-sm font-medium underline">{authorUsername}</p>
+            <p className="text-sm font-medium underline">{tenantSlug}</p>
           </div>
           {reviewCount > 0 && (
             <div className="flex gap-1 items-center">

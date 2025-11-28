@@ -6,6 +6,8 @@ import { ProductSort } from "../components/product-sort";
 
 interface ProductListViewProps {
   category?: string;
+  tenantSlug?: string;
+  narrowView?: boolean;
 }
 
 /**
@@ -13,10 +15,14 @@ interface ProductListViewProps {
  * @description A component that renders the product list view.
  * @param {object} props - The props object
  * @param props.category - The category of the products
+ * @param props.tenantSlug - The slug of the tenant
+ * @param props.narrowView - Whether to show the product list in a narrow view
  * @returns {JSX.Element} A JSX element that renders the product list view component
  */
 export const ProductListView = ({
   category,
+  tenantSlug,
+  narrowView,
 }: ProductListViewProps): JSX.Element => {
   return (
     <div className="flex flex-col gap-4 px-4 py-8 lg:px-12">
@@ -29,8 +35,12 @@ export const ProductListView = ({
           <ProductFilters />
         </div>
         <div className="lg:col-span-4 xl:col-span-6">
-          <Suspense fallback={<ProductListSkeleton />}>
-            <ProductList category={category} />
+          <Suspense fallback={<ProductListSkeleton narrowView={narrowView} />}>
+            <ProductList
+              category={category}
+              tenantSlug={tenantSlug}
+              narrowView={narrowView}
+            />
           </Suspense>
         </div>
       </div>

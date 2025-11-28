@@ -8,6 +8,8 @@ import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { DEFAULT_LIMIT } from "@/constants";
 import { useTRPC } from "@/trpc/client";
 
+import { cn } from "@/lib/utils";
+
 import { Button } from "@/components/ui/button";
 
 import { useProductFilters } from "../../hooks/use-product-filters";
@@ -16,6 +18,8 @@ import { ProductCard, ProductCardSkeleton } from "./product-card";
 
 interface ProductListProps {
   category?: string;
+  tenantSlug?: string;
+  narrowView?: boolean;
 }
 
 /**
@@ -23,9 +27,15 @@ interface ProductListProps {
  * @description Renders a list of products with infinite scrolling, product filtering, product sorting, product pagination, product loading, and empty state handling
  * @param {object} props - The props object
  * @param props.category - The category of the products
+ * @param props.tenantSlug - The slug of the tenant
+ * @param props.narrowView - Whether to show the product list in a narrow view
  * @returns {JSX.Element} A JSX element that renders the product list component
  */
-export const ProductList = ({ category }: ProductListProps): JSX.Element => {
+export const ProductList = ({
+  category,
+  tenantSlug,
+  narrowView,
+}: ProductListProps): JSX.Element => {
   const [filters] = useProductFilters();
 
   const trpc = useTRPC();
@@ -36,7 +46,7 @@ export const ProductList = ({ category }: ProductListProps): JSX.Element => {
     fetchNextPage,
   } = useSuspenseInfiniteQuery(
     trpc.products.getMany.infiniteQueryOptions(
-      { category, ...filters, limit: DEFAULT_LIMIT },
+      { category, tenantSlug, ...filters, limit: DEFAULT_LIMIT },
       {
         getNextPageParam: (lastPage) =>
           lastPage.docs.length > 0 ? lastPage.nextPage : undefined,
@@ -55,7 +65,12 @@ export const ProductList = ({ category }: ProductListProps): JSX.Element => {
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      <div
+        className={cn(
+          "grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4",
+          narrowView && "lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3"
+        )}
+      >
         {products?.pages
           .flatMap((page) => page.docs)
           .map((product) => (
@@ -64,8 +79,8 @@ export const ProductList = ({ category }: ProductListProps): JSX.Element => {
               id={product.id}
               name={product.name}
               imageUrl={product.image?.url}
-              authorUsername="bhushan"
-              authorImageUrl={undefined}
+              tenantSlug={product.tenant?.slug}
+              tenantImageUrl={product.tenant?.image?.url}
               reviewRating={3}
               reviewCount={5}
               price={product.price}
@@ -91,11 +106,20 @@ export const ProductList = ({ category }: ProductListProps): JSX.Element => {
 /**
  * Product list skeleton component
  * @description Renders a grid of product cards with skeleton loading states
+ * @param {object} props - The props object
+ * @param props.narrowView - Whether to show the product list in a narrow view
  * @returns {JSX.Element} A JSX element that renders the product list skeleton component
  */
-export const ProductListSkeleton = (): JSX.Element => {
+export const ProductListSkeleton = ({
+  narrowView,
+}: ProductListProps): JSX.Element => {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+    <div
+      className={cn(
+        "grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4",
+        narrowView && "lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3"
+      )}
+    >
       {Array.from({ length: DEFAULT_LIMIT }).map((_, index) => (
         <ProductCardSkeleton key={index} />
       ))}
