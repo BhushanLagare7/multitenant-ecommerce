@@ -13,6 +13,7 @@ import { Products } from "./collections/Products";
 import { Tags } from "./collections/Tags";
 import { Tenants } from "./collections/Tenants";
 import { Users } from "./collections/Users";
+import { Config } from "./payload-types";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -51,14 +52,11 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    multiTenantPlugin({
+    multiTenantPlugin<Config>({
       collections: { products: {} },
       tenantsArrayField: { includeDefaultField: false },
       userHasAccessToAllTenants: (user) =>
-        Boolean(
-          // user?.collection === "users" && user?.roles?.includes("super-admin")
-          user?.roles?.includes("super-admin")
-        ),
+        Boolean(user?.roles?.includes("super-admin")),
     }),
     // storage-adapter-placeholder
   ],
