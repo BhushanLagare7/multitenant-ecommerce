@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import dynamic from "next/dynamic";
 
 import { BookmarkCheckIcon, ListFilterIcon, SearchIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -12,6 +12,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { CategoriesSidebar } from "./categories-sidebar";
+
+/**
+ * Library button component
+ * @description Renders a library button with a dynamic import
+ * @returns {JSX.Element} A JSX element that renders the library button component
+ */
+const LibraryButton = dynamic(
+  () => import("../library-button").then((mod) => mod.LibraryButton),
+  {
+    ssr: false,
+    loading: () => (
+      <Button disabled variant="elevated" className="flex-1">
+        <BookmarkCheckIcon /> Library
+      </Button>
+    ),
+  }
+);
 
 interface SearchInputProps {
   disabled?: boolean;
@@ -47,13 +64,7 @@ export const SearchInput = ({ disabled }: SearchInputProps) => {
       >
         <ListFilterIcon />
       </Button>
-      {session.data?.user && (
-        <Button variant="elevated" asChild>
-          <Link href="/library">
-            <BookmarkCheckIcon /> Library
-          </Link>
-        </Button>
-      )}
+      {session.data?.user && <LibraryButton />}
     </div>
   );
 };

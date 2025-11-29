@@ -2,16 +2,42 @@
 
 import { JSX } from "react";
 import { Route } from "next";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 
+import { ShoppingCartIcon } from "lucide-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { useTRPC } from "@/trpc/client";
 
 import { generateTenantUrl } from "@/lib/utils";
 
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+
+/**
+ * Checkout button component
+ * @description Renders a checkout button with a dynamic import
+ * @param {object} props - The props object
+ * @param props.tenantSlug - The slug of the tenant
+ * @param props.hideIfEmpty - Whether to hide the button if the cart is empty
+ * @returns {JSX.Element} A JSX element that renders the checkout button component
+ */
+const CheckoutButton = dynamic(
+  () =>
+    import("@/modules/checkout/ui/components/checkout-button").then(
+      (mod) => mod.CheckoutButton
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <Button disabled className="bg-white" aria-label="Shopping cart">
+        <ShoppingCartIcon className="text-black" />
+      </Button>
+    ),
+  }
+);
 
 interface NavbarProps {
   slug: string;
@@ -49,6 +75,7 @@ export const Navbar = ({ slug }: NavbarProps): JSX.Element => {
           )}
           <p className="text-xl">{tenant.name}</p>
         </Link>
+        <CheckoutButton tenantSlug={slug} hideIfEmpty />
       </div>
     </nav>
   );
@@ -67,7 +94,9 @@ export const NavbarSkeleton = (): JSX.Element => {
           <Skeleton className="w-8 h-8 rounded-full" />
           <Skeleton className="w-20 h-5" />
         </div>
-        {/* // TODO: Skeleton for checkout button */}
+        <Button disabled className="bg-white" aria-label="Shopping cart">
+          <ShoppingCartIcon className="text-black" />
+        </Button>
       </div>
     </nav>
   );
