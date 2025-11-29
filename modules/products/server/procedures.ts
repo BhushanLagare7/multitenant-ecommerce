@@ -8,15 +8,38 @@ import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { sortValues } from "../search-params";
 
 /**
- * Products router
  * @description A router that handles the products.
- * @function getMany
- * @description A procedure that returns the products.
- * @param {object} ctx - The context object
- * @param {object} input - The input object
- * @returns {object} An object containing the products router
+ * @function productsRouter
+ * @returns {object} An object containing procedures for products
  */
 export const productsRouter = createTRPCRouter({
+  /**
+   * @description A procedure that returns a single product.
+   * @param {object} ctx - The context object
+   * @param {object} input - The input object
+   * @returns {object} An object containing the product
+   */
+  getOne: baseProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const product = await ctx.db.findByID({
+        collection: "products",
+        id: input.id,
+        depth: 2, // Load the "product.image" & "product.tenant" and "product.tenant.image" fields
+      });
+
+      return {
+        ...product,
+        image: product.image as Media | null,
+        tenant: product.tenant as Tenant & { image: Media | null },
+      };
+    }),
+  /**
+   * @description A procedure that returns the list of products.
+   * @param {object} ctx - The context object
+   * @param {object} input - The input object
+   * @returns {object} An object containing the list of products
+   */
   getMany: baseProcedure
     .input(
       z.object({
