@@ -1,5 +1,6 @@
 import { authRouter } from "@/modules/auth/server/procedures";
 import { categoriesRouter } from "@/modules/categories/server/procedures";
+import { checkoutRouter } from "@/modules/checkout/server/procedures";
 import { productsRouter } from "@/modules/products/server/procedures";
 import { tagsRouter } from "@/modules/tags/server/procedures";
 import { tenantsRouter } from "@/modules/tenants/server/procedures";
@@ -11,6 +12,7 @@ import { createTRPCRouter } from "../init";
  * @description The root router for this server.
  * @property {AuthRouter} auth - The auth router
  * @property {CategoriesRouter} categories - The categories router
+ * @property {CheckoutRouter} checkout - The checkout router
  * @property {ProductsRouter} products - The products router
  * @property {TagsRouter} tags - The tags router
  * @property {TenantsRouter} tenants - The tenants router
@@ -19,6 +21,7 @@ import { createTRPCRouter } from "../init";
 export const appRouter = createTRPCRouter({
   auth: authRouter,
   categories: categoriesRouter,
+  checkout: checkoutRouter,
   products: productsRouter,
   tags: tagsRouter,
   tenants: tenantsRouter,
