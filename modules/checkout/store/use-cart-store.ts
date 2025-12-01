@@ -11,7 +11,6 @@ interface CartState {
   removeProduct: (tenantSlug: string, productId: string) => void;
   clearCart: (tenantSlug: string) => void;
   clearAllCart: () => void;
-  getCartbyTenant: (tenantSlug: string) => string[];
 }
 /**
  * @description Cart store for managing tenant-specific shopping carts with localStorage persistence.
@@ -19,7 +18,7 @@ interface CartState {
  */
 export const useCartStore = create<CartState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       tenantCarts: {},
       /**
        * @description This is the add product to cart function
@@ -79,13 +78,6 @@ export const useCartStore = create<CartState>()(
         set({
           tenantCarts: {},
         }),
-      /**
-       * @description This is the get cart by tenant function
-       * @param {string} tenantSlug - The slug of the tenant
-       * @returns {string[]} The array of product ids
-       */
-      getCartbyTenant: (tenantSlug) =>
-        get().tenantCarts[tenantSlug]?.productId || [],
     }),
     {
       name: "funroad-cart",

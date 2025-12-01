@@ -132,7 +132,11 @@ export const ProductView = ({
             <div className="h-full border-t lg:border-t-0 lg:border-l">
               <div className="flex flex-col gap-4 p-6 border-b">
                 <div className="flex flex-row gap-2 items-center">
-                  <CartButton tenantSlug={tenantSlug} productId={productId} />
+                  <CartButton
+                    isPurchased={product.isPurchased}
+                    tenantSlug={tenantSlug}
+                    productId={productId}
+                  />
                   <Button
                     variant="elevated"
                     className="size-12"
