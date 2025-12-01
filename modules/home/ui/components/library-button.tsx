@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 export const LibraryButton = (): JSX.Element => {
   return (
     <Button variant="elevated" asChild>
-      <Link href="/library">
+      <Link prefetch href="/library">
         <BookmarkCheckIcon /> Library
       </Link>
     </Button>

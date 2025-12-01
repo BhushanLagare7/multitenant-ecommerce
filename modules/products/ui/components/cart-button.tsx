@@ -1,4 +1,5 @@
 import { JSX } from "react";
+import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
@@ -8,6 +9,7 @@ import { useCart } from "@/modules/checkout/hooks/use-cart";
 interface CartButtonProps {
   tenantSlug: string;
   productId: string;
+  isPurchased?: boolean;
 }
 
 /**
@@ -21,8 +23,24 @@ interface CartButtonProps {
 export const CartButton = ({
   tenantSlug,
   productId,
+  isPurchased,
 }: CartButtonProps): JSX.Element => {
   const cart = useCart(tenantSlug);
+
+  // If the product is purchased, render a button that links to the library
+  if (isPurchased) {
+    return (
+      <Button
+        variant="elevated"
+        className="flex-1 font-medium bg-white"
+        asChild
+      >
+        <Link href={`/library/${productId}`} prefetch>
+          View in Library
+        </Link>
+      </Button>
+    );
+  }
 
   return (
     <Button
