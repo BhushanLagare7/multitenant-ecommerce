@@ -40,7 +40,7 @@ export const ProductCard = ({
   reviewCount,
 }: ProductCardProps): JSX.Element => {
   return (
-    <Link href={`/library/${id}` as Route<string>}>
+    <Link prefetch href={`/library/${id}` as Route<string>}>
       <div className="flex overflow-hidden flex-col h-full bg-white rounded-md border hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow">
         <div className="relative aspect-square">
           <Image
