@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { InboxIcon, LoaderIcon } from "lucide-react";
 import { toast } from "sonner";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useTRPC } from "@/trpc/client";
 
@@ -35,6 +35,7 @@ export const CheckoutView = ({
   const { productIds, removeProduct, clearCart } = useCart(tenantSlug);
 
   const trpc = useTRPC();
+  const queryClient = useQueryClient();
   const {
     data: products,
     error,
@@ -64,10 +65,19 @@ export const CheckoutView = ({
     if (states.success) {
       setStates({ cancel: false, success: false });
       clearCart();
-      // TODO: Invalidate library
-      router.push("/products");
+      queryClient.invalidateQueries({
+        queryKey: trpc.library.getMany.infiniteQueryKey(),
+      });
+      router.push("/library");
     }
-  }, [states.success, clearCart, router, setStates]);
+  }, [
+    states.success,
+    clearCart,
+    router,
+    setStates,
+    queryClient,
+    trpc.library.getMany,
+  ]);
 
   // Handle not found
   useEffect(() => {
