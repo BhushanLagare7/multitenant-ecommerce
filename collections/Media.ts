@@ -1,5 +1,7 @@
 import type { CollectionConfig } from "payload";
 
+import { isSuperAdmin } from "@/lib/access";
+
 /**
  * @description Configuration for the media collection.
  * @type {CollectionConfig}
@@ -16,6 +18,10 @@ export const Media: CollectionConfig = {
   slug: "media",
   access: {
     read: () => true,
+    delete: ({ req }) => isSuperAdmin(req.user),
+  },
+  admin: {
+    hidden: ({ user }) => !isSuperAdmin(user),
   },
   fields: [
     {

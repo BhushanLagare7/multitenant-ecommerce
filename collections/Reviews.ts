@@ -1,5 +1,7 @@
 import type { CollectionConfig } from "payload";
 
+import { isSuperAdmin } from "@/lib/access";
+
 /**
  * @description Configuration for the reviews collection.
  * @type {CollectionConfig} - The configuration object for the reviews collection.
@@ -22,6 +24,12 @@ import type { CollectionConfig } from "payload";
  */
 export const Reviews: CollectionConfig = {
   slug: "reviews",
+  access: {
+    read: ({ req }) => isSuperAdmin(req.user),
+    create: ({ req }) => isSuperAdmin(req.user),
+    update: ({ req }) => isSuperAdmin(req.user),
+    delete: ({ req }) => isSuperAdmin(req.user),
+  },
   admin: {
     useAsTitle: "description",
   },

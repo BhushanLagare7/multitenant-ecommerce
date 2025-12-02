@@ -1,5 +1,7 @@
 import type { ArrayField, CollectionConfig } from "payload";
 import { tenantsArrayField } from "@payloadcms/plugin-multi-tenant/fields";
+
+import { isSuperAdmin } from "@/lib/access";
 /**
  * @description Default tenant array field for the users collection.
  * @type {TenantArrayField}
@@ -22,13 +24,13 @@ const defaultTenantArrayField: ArrayField = tenantsArrayField({
   tenantsArrayTenantFieldName: "tenant",
   arrayFieldAccess: {
     read: () => true,
-    create: () => true,
-    update: () => true,
+    create: ({ req }) => isSuperAdmin(req.user),
+    update: ({ req }) => isSuperAdmin(req.user),
   },
   tenantFieldAccess: {
     read: () => true,
-    create: () => true,
-    update: () => true,
+    create: ({ req }) => isSuperAdmin(req.user),
+    update: ({ req }) => isSuperAdmin(req.user),
   },
 });
 
@@ -36,6 +38,11 @@ const defaultTenantArrayField: ArrayField = tenantsArrayField({
  * @description Configuration for the users collection.
  * @type {CollectionConfig}
  * @property {string} slug - The slug for the collection.
+ * @property {object} access - The access control for the collection.
+ * @property {function} access.read - The read access control for the collection.
+ * @property {function} access.create - The create access control for the collection.
+ * @property {function} access.update - The update access control for the collection.
+ * @property {function} access.delete - The delete access control for the collection.
  * @property {object} admin - The admin configuration for the collection.
  * @property {string} admin.useAsTitle - The field to use as the title for the collection.
  * @property {boolean} auth - Whether the collection has an authentication field.
@@ -57,8 +64,21 @@ const defaultTenantArrayField: ArrayField = tenantsArrayField({
  */
 export const Users: CollectionConfig = {
   slug: "users",
+  access: {
+    read: () => true,
+    create: ({ req }) => isSuperAdmin(req.user),
+    delete: ({ req }) => isSuperAdmin(req.user),
+    update: ({ req, id }) => {
+      const user = req.user;
+      // Super admin can update any user
+      // User can update only their own user
+      return isSuperAdmin(user) || user?.id === id;
+    },
+  },
   admin: {
     useAsTitle: "email",
+    // Hide users collection from non-super-admin users in the admin UI
+    hidden: ({ user }) => !isSuperAdmin(user),
   },
   auth: true,
   fields: [
@@ -79,6 +99,9 @@ export const Users: CollectionConfig = {
       hasMany: true,
       options: ["super-admin", "user"],
       admin: { position: "sidebar" },
+      access: {
+        update: ({ req }) => isSuperAdmin(req.user),
+      },
     },
   ],
 };
