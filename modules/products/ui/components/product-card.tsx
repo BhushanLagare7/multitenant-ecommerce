@@ -8,8 +8,6 @@ import { StarIcon } from "lucide-react";
 
 import { formatCurrency, generateTenantUrl } from "@/lib/utils";
 
-// TODO: Add Real ratings
-
 interface ProductCardProps {
   id: string;
   name: string;
