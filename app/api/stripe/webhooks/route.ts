@@ -41,7 +41,10 @@ export async function POST(req: Request): Promise<NextResponse> {
   console.log(`✅ Success: ${event.id}`);
 
   // Permitted events
-  const permittedEvents: string[] = ["checkout.session.completed"];
+  const permittedEvents: string[] = [
+    "checkout.session.completed",
+    "account.updated",
+  ];
 
   const payload = await getPayload({ config });
 
@@ -49,7 +52,8 @@ export async function POST(req: Request): Promise<NextResponse> {
     let data;
     try {
       switch (event.type) {
-        case "checkout.session.completed":
+        // Checkout session completed
+        case "checkout.session.completed": {
           data = event.data.object as Stripe.Checkout.Session;
 
           if (!data.metadata?.userId) {
@@ -68,7 +72,8 @@ export async function POST(req: Request): Promise<NextResponse> {
           // Get expanded session
           const expandedSession = await stripe.checkout.sessions.retrieve(
             data.id,
-            { expand: ["line_items.data.price.product"] }
+            { expand: ["line_items.data.price.product"] },
+            { stripeAccount: event.account } // This is the tenant's Stripe account
           );
 
           if (
@@ -87,6 +92,7 @@ export async function POST(req: Request): Promise<NextResponse> {
               collection: "orders",
               data: {
                 stripeCheckoutSessionId: data.id,
+                stripeAccountId: event.account,
                 user: user.id,
                 product: lineItem.price.product.metadata.id,
                 name: lineItem.price.product.name,
@@ -95,6 +101,25 @@ export async function POST(req: Request): Promise<NextResponse> {
           }
 
           break;
+        }
+
+        // Tenant account updated
+        case "account.updated": {
+          data = event.data.object as Stripe.Account;
+
+          await payload.update({
+            collection: "tenants",
+            where: {
+              stripeAccountId: {
+                equals: data.id,
+              },
+            },
+            data: {
+              stripeDetailsSubmitted: data.details_submitted,
+            },
+          });
+          break;
+        }
         default:
           throw new Error(`Unhandled event type: ${event.type}`);
       }
