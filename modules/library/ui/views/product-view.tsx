@@ -46,9 +46,13 @@ export const ProductView = ({ productId }: ProductViewProps): JSX.Element => {
             </div>
           </div>
           <div className="lg:col-span-5">
-            <p className="italic font-medium text-muted-foreground">
-              No special content
-            </p>
+            {product.content ? (
+              <p>{product.content}</p>
+            ) : (
+              <p className="italic font-medium text-muted-foreground">
+                No special content
+              </p>
+            )}
           </div>
         </div>
       </section>

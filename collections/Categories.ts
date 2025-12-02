@@ -1,9 +1,16 @@
 import type { CollectionConfig } from "payload";
 
+import { isSuperAdmin } from "@/lib/access";
+
 /**
  * @description Configuration for the categories collection.
  * @type {CollectionConfig} - The configuration object for the categories collection.
  * @property {string} slug - The slug for the collection.
+ * @property {object} access - The access control for the collection.
+ * @property {function} access.read - The read access control for the collection.
+ * @property {function} access.create - The create access control for the collection.
+ * @property {function} access.update - The update access control for the collection.
+ * @property {function} access.delete - The delete access control for the collection.
  * @property {object} admin - The admin configuration for the collection.
  * @property {string} admin.useAsTitle - The field to use as the title for the collection.
  * @property {Array} fields - The fields for the collection.
@@ -29,8 +36,16 @@ import type { CollectionConfig } from "payload";
  */
 export const Categories: CollectionConfig = {
   slug: "categories",
+  access: {
+    read: () => true,
+    create: ({ req }) => isSuperAdmin(req.user),
+    update: ({ req }) => isSuperAdmin(req.user),
+    delete: ({ req }) => isSuperAdmin(req.user),
+  },
   admin: {
     useAsTitle: "name",
+    // Hide categories collection from non-super-admin users in the admin UI
+    hidden: ({ user }) => !isSuperAdmin(user),
   },
   fields: [
     {
