@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "eslint",
     "generate:types": "bunx --bun payload generate:types --disable-transpile",
+    "generate:importmap": "bunx --bun payload generate:importmap --disable-transpile",
     "db:fresh": "bunx --bun payload migrate:fresh --disable-transpile",
     "db:seed": "bun run seed.ts"
   },
