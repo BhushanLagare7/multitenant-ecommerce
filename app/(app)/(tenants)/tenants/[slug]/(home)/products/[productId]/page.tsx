@@ -7,6 +7,8 @@ import {
   ProductViewSkeleton,
 } from "@/modules/products/ui/views/product-view";
 
+export const dynamic = "force-dynamic";
+
 /**
  * @description Render the product page for the current product, hydrating client state and prefetching the tenant. Hydrates the query client, triggers a background prefetch for tenant data using `params.slug`, and renders a `ProductView` for that tenant and product.
  * @param params - Route parameters object; `params.slug` is the tenant slug and `params.productId` is the URL segment identifying the product

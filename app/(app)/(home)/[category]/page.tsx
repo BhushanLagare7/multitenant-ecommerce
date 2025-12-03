@@ -6,6 +6,8 @@ import { getQueryClient, HydrateClient, trpc } from "@/trpc/server";
 import { loadProductFilters } from "@/modules/products/search-params";
 import { ProductListView } from "@/modules/products/ui/views/product-list-view";
 
+export const dynamic = "force-dynamic";
+
 /**
  * @description Render the product-list page for the current category, hydrating client state and infinite prefetching category products to  `DEFAULT_LIMIT`. Hydrates the query client, triggers a background prefetch for products in `params.category`, and renders a `ProductListView` for that category.
  * @param params - Route parameters object; `params.category` is the URL segment identifying the category

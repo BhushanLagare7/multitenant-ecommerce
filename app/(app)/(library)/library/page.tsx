@@ -5,6 +5,8 @@ import { getQueryClient, HydrateClient, trpc } from "@/trpc/server";
 
 import { LibraryView } from "@/modules/library/ui/views/library-view";
 
+export const dynamic = "force-dynamic";
+
 /**
  * Library page
  * @description Library page component prefetches the library data and renders the library view
