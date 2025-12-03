@@ -7,6 +7,8 @@ import {
   ProductViewSkeleton,
 } from "@/modules/library/ui/views/product-view";
 
+export const dynamic = "force-dynamic";
+
 /**
  * Library product page
  * @description Library product page component prefetches the library product data, reviews and renders the library product view
