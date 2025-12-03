@@ -8,6 +8,7 @@ import Link from "next/link";
 
 import { CheckIcon, LinkIcon, StarIcon } from "lucide-react";
 import { toast } from "sonner";
+import { RichText } from "@payloadcms/richtext-lexical/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { useTRPC } from "@/trpc/client";
@@ -130,7 +131,7 @@ export const ProductView = ({
             </div>
             <div className="p-6">
               {product.description ? (
-                <p>{product.description}</p>
+                <RichText data={product.description} />
               ) : (
                 <p className="italic font-medium text-muted-foreground">
                   No description provided
@@ -204,6 +205,28 @@ export const ProductView = ({
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Product view skeleton
+ * @description This component is used to display a skeleton while loading the product view
+ * @returns {JSX.Element} Product view skeleton
+ */
+export const ProductViewSkeleton = (): JSX.Element => {
+  return (
+    <div className="px-4 py-10 lg:px-12">
+      <div className="overflow-hidden bg-white rounded-sm border">
+        <div className="relative aspect-[3.9] border-b">
+          <Image
+            src={"/placeholder.png"}
+            alt="Placeholder"
+            fill
+            className="object-cover"
+          />
         </div>
       </div>
     </div>

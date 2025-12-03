@@ -1,8 +1,11 @@
-import { JSX } from "react";
+import { JSX, Suspense } from "react";
 
 import { getQueryClient, HydrateClient, trpc } from "@/trpc/server";
 
-import { ProductView } from "@/modules/products/ui/views/product-view";
+import {
+  ProductView,
+  ProductViewSkeleton,
+} from "@/modules/products/ui/views/product-view";
 
 /**
  * @description Render the product page for the current product, hydrating client state and prefetching the tenant. Hydrates the query client, triggers a background prefetch for tenant data using `params.slug`, and renders a `ProductView` for that tenant and product.
@@ -19,7 +22,9 @@ export default async function ProductPage({
 
   return (
     <HydrateClient>
-      <ProductView productId={productId} tenantSlug={slug} />
+      <Suspense fallback={<ProductViewSkeleton />}>
+        <ProductView productId={productId} tenantSlug={slug} />
+      </Suspense>
     </HydrateClient>
   );
 }
