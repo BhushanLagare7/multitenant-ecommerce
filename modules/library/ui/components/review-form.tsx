@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { JSX, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { toast } from "sonner";
@@ -32,10 +32,15 @@ const formSchema = z.object({
 
 /**
  * ReviewForm component
+ * @description This component is used to create and update reviews
  * @param productId - The id of the product
  * @param initialData? - The initial data of the review
+ * @returns {JSX.Element} ReviewForm component
  */
-export const ReviewForm = ({ productId, initialData }: ReviewFormProps) => {
+export const ReviewForm = ({
+  productId,
+  initialData,
+}: ReviewFormProps): JSX.Element => {
   const [isPreview, setIsPreview] = useState(!!initialData);
 
   const trpc = useTRPC();
@@ -129,7 +134,7 @@ export const ReviewForm = ({ productId, initialData }: ReviewFormProps) => {
             <FormItem>
               <FormControl>
                 <Textarea
-                  placeholder="Want to leave a writted review?"
+                  placeholder="Want to leave a written review?"
                   disabled={isPreview}
                   {...field}
                 />
@@ -149,18 +154,41 @@ export const ReviewForm = ({ productId, initialData }: ReviewFormProps) => {
             {!!initialData ? "Update review" : "Post review"}
           </Button>
         )}
+        {isPreview && (
+          <Button
+            onClick={() => setIsPreview(false)}
+            size="lg"
+            className="mt-4 w-fit"
+            variant="elevated"
+            type="button"
+          >
+            Edit
+          </Button>
+        )}
       </form>
-      {isPreview && (
-        <Button
-          onClick={() => setIsPreview(false)}
-          size="lg"
-          className="mt-4 w-fit"
-          variant="elevated"
-          type="button"
-        >
-          Edit
-        </Button>
-      )}
     </Form>
+  );
+};
+
+/**
+ * Review form skeleton
+ * @returns {JSX.Element} Review form skeleton
+ */
+export const ReviewFormSkeleton = (): JSX.Element => {
+  return (
+    <div className="flex flex-col gap-y-4">
+      <p className="font-medium">Liked it? Give it a rating</p>
+      <StarPicker disabled />
+      <Textarea placeholder="Want to leave a written review?" disabled />
+      <Button
+        variant="elevated"
+        size="lg"
+        type="button"
+        className="text-white bg-black hover:bg-pink-400 hover:text-primary w-fit"
+        disabled
+      >
+        Post review
+      </Button>
+    </div>
   );
 };

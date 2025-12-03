@@ -2,6 +2,7 @@ import { headers as getHeaders } from "next/headers";
 
 import { Sort, Where } from "payload";
 import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 
 import { DEFAULT_LIMIT } from "@/constants";
 import { Category, Media, Tenant } from "@/payload-types";
@@ -94,6 +95,13 @@ export const productsRouter = createTRPCRouter({
         select: { content: false },
       });
 
+      if (product.isArchived) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Product not found",
+        });
+      }
+
       return {
         ...product,
         isPurchased,
@@ -124,7 +132,11 @@ export const productsRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      const where: Where = {};
+      const where: Where = {
+        isArchived: {
+          not_equals: true,
+        },
+      };
       let sort: Sort = "-createdAt";
 
       if (input.sort === "curated") {
@@ -153,6 +165,13 @@ export const productsRouter = createTRPCRouter({
       if (input.tenantSlug) {
         where["tenant.slug"] = {
           equals: input.tenantSlug,
+        };
+      } else {
+        // If we are loading products for public storefront (no tenantSlug)
+        // Make sure not to load products set to "isPrivate: true" (using reverse not_equals logic)
+        // These products are exclusively private to the tenant store
+        where["isPrivate"] = {
+          not_equals: true,
         };
       }
 

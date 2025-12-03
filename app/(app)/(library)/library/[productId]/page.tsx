@@ -1,8 +1,11 @@
-import { JSX } from "react";
+import { JSX, Suspense } from "react";
 
 import { getQueryClient, HydrateClient, trpc } from "@/trpc/server";
 
-import { ProductView } from "@/modules/library/ui/views/product-view";
+import {
+  ProductView,
+  ProductViewSkeleton,
+} from "@/modules/library/ui/views/product-view";
 
 /**
  * Library product page
@@ -24,7 +27,9 @@ export default async function LibraryProductPage({
 
   return (
     <HydrateClient>
-      <ProductView productId={productId} />
+      <Suspense fallback={<ProductViewSkeleton />}>
+        <ProductView productId={productId} />
+      </Suspense>
     </HydrateClient>
   );
 }
