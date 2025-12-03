@@ -1,4 +1,5 @@
 import { JSX } from "react";
+import { Route } from "next";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
 
@@ -20,7 +21,7 @@ export const Footer = (): JSX.Element => {
       <div className="flex gap-2 items-center px-4 py-6 mx-auto max-w-7xl h-full lg:px-12">
         <p>Powered by</p>
         <Link
-          href="/"
+          href={process.env.NEXT_PUBLIC_APP_URL as Route<string>}
           className={cn("text-2xl font-semibold", poppins.className)}
         >
           <span>funroad</span>

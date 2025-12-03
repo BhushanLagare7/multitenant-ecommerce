@@ -11,6 +11,7 @@ import {
 } from "@/trpc/init";
 
 import { stripe } from "@/lib/stripe";
+import { generateTenantUrl } from "@/lib/utils";
 
 import { CheckoutMetadata, ProductMetadata } from "../types";
 
@@ -156,13 +157,15 @@ export const checkoutRouter = createTRPCRouter({
         totalAmount * (PLATFORM_FEE_PERCENTAGE / 100)
       );
 
+      const domain = generateTenantUrl(input.tenantSlug);
+
       const checkout = await stripe.checkout.sessions.create(
         {
           customer_email: ctx.session.user.email,
           line_items: lineItems,
           mode: "payment",
-          success_url: `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${input.tenantSlug}/checkout?success=true`,
-          cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${input.tenantSlug}/checkout?cancel=true`,
+          success_url: `${domain}/tenants/${input.tenantSlug}/checkout?success=true`,
+          cancel_url: `${domain}/tenants/${input.tenantSlug}/checkout?cancel=true`,
           invoice_creation: { enabled: true },
           metadata: {
             userId: ctx.session.user.id,

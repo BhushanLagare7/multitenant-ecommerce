@@ -18,7 +18,28 @@ export function cn(...inputs: ClassValue[]) {
  * @returns The URL for the tenant
  */
 export function generateTenantUrl(tenantSlug: string) {
-  return `/tenants/${tenantSlug}`;
+  // In development mode, use normal routing
+  if (process.env.NODE_ENV === "development") {
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+    if (!appUrl) {
+      throw new Error(
+        "NEXT_PUBLIC_APP_URL is not defined in environment variables"
+      );
+    }
+    return `${appUrl}/tenants/${tenantSlug}`;
+  }
+
+  const protocol = "https";
+  const domain = process.env.NEXT_PUBLIC_ROOT_DOMAIN;
+
+  if (!domain) {
+    throw new Error(
+      "NEXT_PUBLIC_ROOT_DOMAIN is not defined in environment variables"
+    );
+  }
+
+  // In production mode, use subdomain routing
+  return `${protocol}://${tenantSlug}.${domain}`;
 }
 
 /**
