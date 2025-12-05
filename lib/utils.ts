@@ -18,8 +18,12 @@ export function cn(...inputs: ClassValue[]) {
  * @returns The URL for the tenant
  */
 export function generateTenantUrl(tenantSlug: string) {
-  // In development mode, use normal routing
-  if (process.env.NODE_ENV === "development") {
+  const isDevelopment = process.env.NODE_ENV === "development";
+  const isSubdomainRoutingEnabled = Boolean(
+    process.env.NEXT_PUBLIC_SUBDOMAIN_ROUTING_ENABLED
+  );
+  // In development or subdomain routing is disabled, use normal routing
+  if (isDevelopment || !isSubdomainRoutingEnabled) {
     const appUrl = process.env.NEXT_PUBLIC_APP_URL;
     if (!appUrl) {
       throw new Error(
@@ -38,7 +42,7 @@ export function generateTenantUrl(tenantSlug: string) {
     );
   }
 
-  // In production mode, use subdomain routing
+  // In production or subdomain routing is enabled, use subdomain routing
   return `${protocol}://${tenantSlug}.${domain}`;
 }
 
